@@ -6,7 +6,7 @@
 /*   By: vtouffet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 13:54:40 by vtouffet          #+#    #+#             */
-/*   Updated: 2017/07/24 21:33:16 by vtouffet         ###   ########.fr       */
+/*   Updated: 2017/07/24 22:09:08 by vtouffet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	**save_second_line(t_list **node, int **map, int index)
 	return (map);
 }
 
-int	**save_lines(int **map, int *index, char c, int *i)
+int	**save_lines(int **map, int *index, char c, int *i, int k)
 {
 	if (c == '\n')
 	{
@@ -94,8 +94,11 @@ int	**save_lines(int **map, int *index, char c, int *i)
 		*i = 0;
 		map[*index] = (int*)malloc(sizeof(int) * map[0][3]);
 	}
-	map[*index][(*i)++] = (c == map[0][0]) ? 1 : 0;
-	printf("map[%d][%d] = %d\n", *index, *i-1, map[*index][*i -1]);
+	else if (c)
+	{
+		map[*index][(*i)++] = (c == map[0][0]) ? 1 : 0;
+		printf("map[%d][%d] = %d (k: %d, c: %c)\n", *index, *i-1, map[*index][*i -1], k, c);
+	}
 	return (map);
 }
 
@@ -130,8 +133,8 @@ int	**read_file(int fd, int **map)
 				ft_list_push_back(&node, buffer[k]);
 			else if (newline_count == 2 && node) // fin de deuxieme ligne
 				map = save_second_line(&node, map, index);
-			if (newline_count > 2) // autres lignes
-				map = save_lines(map, &index, buffer[k], &i);
+			if (newline_count >= 2) // autres lignes
+				map = save_lines(map, &index, buffer[k], &i, k);
 		}
 	}
 	return (map);
