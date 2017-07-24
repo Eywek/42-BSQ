@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_create_elem.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vtouffet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/07/24 09:45:36 by vtouffet          #+#    #+#             */
-/*   Updated: 2017/07/24 16:52:15 by vtouffet         ###   ########.fr       */
+/*   Created: 2017/07/17 10:24:39 by vtouffet          #+#    #+#             */
+/*   Updated: 2017/07/24 14:40:55 by vtouffet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/utils.h"
+#include <stdlib.h>
+#include "../../includes/ft_list.h"
 
-int main(int argc, char *argv[])
+t_list	*ft_create_elem(char data)
 {
-	handle_file("test.txt");
-	/*
-	if (argc > 1)
-		while (argc-- > 0)
-			resolve(parser(handle_file(argv[argc])));
-	else
-		resolve(parser(handle_file(0)));
-	*/return (0);
+	t_list *element;
+
+	if (!(element = malloc(sizeof(t_list))))
+		return (NULL);
+	element->data = data;
+	element->next = NULL;
+	return (element);
 }

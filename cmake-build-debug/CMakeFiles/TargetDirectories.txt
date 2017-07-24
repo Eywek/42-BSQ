@@ -1,0 +1,3 @@
+/Users/vtouffet/piscine/bsq/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/vtouffet/piscine/bsq/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/vtouffet/piscine/bsq/cmake-build-debug/CMakeFiles/bsq.dir

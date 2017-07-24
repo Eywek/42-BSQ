@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/vtouffet/piscine/bsq/includes/utils.h
+
+/Users/vtouffet/piscine/bsq/srcs/main.c
+../includes/utils.h
+/Users/vtouffet/piscine/bsq/includes/utils.h
+

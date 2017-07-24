@@ -1,25 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vtouffet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/07/24 09:45:36 by vtouffet          #+#    #+#             */
-/*   Updated: 2017/07/24 16:52:15 by vtouffet         ###   ########.fr       */
+/*   Created: 2017/07/24 18:18:30 by vtouffet          #+#    #+#             */
+/*   Updated: 2017/07/24 18:18:57 by vtouffet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/utils.h"
-
-int main(int argc, char *argv[])
+int	ft_strlen(char *str)
 {
-	handle_file("test.txt");
-	/*
-	if (argc > 1)
-		while (argc-- > 0)
-			resolve(parser(handle_file(argv[argc])));
-	else
-		resolve(parser(handle_file(0)));
-	*/return (0);
+	int	count;
+
+	count = 0;
+	while (str[count])
+		count++;
+	return (count);
 }
