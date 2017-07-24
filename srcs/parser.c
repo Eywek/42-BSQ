@@ -6,7 +6,7 @@
 /*   By: vtouffet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 13:54:40 by vtouffet          #+#    #+#             */
-/*   Updated: 2017/07/24 20:49:11 by vtouffet         ###   ########.fr       */
+/*   Updated: 2017/07/24 21:33:16 by vtouffet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,11 +91,11 @@ int	**save_lines(int **map, int *index, char c, int *i)
 	if (c == '\n')
 	{
 		++(*index);
-		++(*i);
+		*i = 0;
 		map[*index] = (int*)malloc(sizeof(int) * map[0][3]);
 	}
-	map[*index][*i] = (c == map[0][0]) ? 1 : 0;
-	printf("map[%d][%d] = \n", *index, *i);
+	map[*index][(*i)++] = (c == map[0][0]) ? 1 : 0;
+	printf("map[%d][%d] = %d\n", *index, *i-1, map[*index][*i -1]);
 	return (map);
 }
 
