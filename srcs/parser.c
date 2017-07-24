@@ -6,7 +6,7 @@
 /*   By: vtouffet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 13:54:40 by vtouffet          #+#    #+#             */
-/*   Updated: 2017/07/24 23:26:07 by vtouffet         ###   ########.fr       */
+/*   Updated: 2017/07/24 23:53:03 by vtouffet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	**handle_file(char *filename)
 		fd = 0;
 	if (fd == -1)
 		return (map);
-	return (read_file(fd, map));
+	return (read_file(fd, map, 1, 0));
 }
 
 int	**save_first_line(t_list **node, int **map, int *first)
@@ -43,7 +43,7 @@ int	**save_first_line(t_list **node, int **map, int *first)
 		current = current->next;
 	fline[i] = '\0';
 	i = 0;
-	if (!(map = (int**)malloc(sizeof(int*) * ((l_count = ft_atoi(fline)) + 2)))) // on malloc la premiere dimension avec le atoi() de la premier ligne
+	if (!(map = (int**)malloc(sizeof(int*) * ((l_count = ft_atoi(fline)) + 2))))
 		return (NULL);
 	if (!(map[0] = (int*)malloc(sizeof(int) * 7)))
 		return (NULL);
@@ -54,7 +54,6 @@ int	**save_first_line(t_list **node, int **map, int *first)
 	ft_list_clear(node);
 	free(fline);
 	*first = 1;
-	printf("Set config... (%s) - line_count: %d - length: %d\n", fline, l_count, length);
 	return (map);
 }
 
@@ -65,21 +64,14 @@ int	**save_second_line(t_list **node, int **map, int index)
 	int		node_size;
 
 	node_size = ft_list_size(*node);
-	printf("- map[%d] = (int*)malloc(sizeof(int) * %d);\n", index, node_size);
 	if (!(map[index] = (int*)malloc(sizeof(int) * (node_size))))
 		return (NULL);
-	map[0][3] = node_size + 1; // set line size
+	map[0][3] = node_size + 1;
 	i = 0;
-	printf("vide: %c\n", map[0][0]);
-	printf("obstacle: %c\n", map[0][1]);
-	printf("remplissage: %c\n", map[0][2]);
-	printf("line size: %d\n", map[0][3]);
-	printf("map size: %d\n", map[0][4]);
 	current = *node;
 	while (current)
 	{
 		map[index][i++] = (current->data == map[0][0]) ? 1 : 0;
-		printf("FIRST LINE map[%d][%d] = %d\n", index, i-1, map[index][i-1]);
 		current = current->next;
 	}
 	i = 0;
@@ -87,54 +79,44 @@ int	**save_second_line(t_list **node, int **map, int index)
 	return (map);
 }
 
-int	**save_lines(int **map, int *index, char c, int *i, int k)
+int	**save_lines(int **map, int *index, char c, int *i)
 {
 	if (c == '\n')
 	{
 		++(*index);
 		*i = 0;
-		printf("_ map[%d] = (int*)malloc(sizeof(int) * %d);\n", *index, map[0][3]);
 		if (!(map[*index] = (int*)malloc(sizeof(int) * (map[0][3]))))
 			return (NULL);
 	}
 	else if (c)
-	{
 		map[*index][(*i)++] = (c == map[0][0]) ? 1 : 0;
-		printf("map[%d][%d] = %d\n", *index, *i-1, map[*index][*i -1]);
-	}
 	return (map);
 }
 
-int	**read_file(int fd, int **map)
+int	**read_file(int fd, int **map, int index, int i)
 {
 	ssize_t	bytes;
 	char	buffer[BUFFER_SIZE];
 	t_list	*node;
-	int		newline_count;
-	int		index;
-	int		k;
-	int		first;
-	int		i;
+	int		k[3];
 
-	index = 1;
-	first = 0;
-	i = 0;
-	newline_count = 0;
-	while ((bytes = read(fd, &buffer, BUFFER_SIZE)))
+	k[1] = 0;
+	k[0] = 0;
+	while ((bytes = read(fd, &buffer, BUFFER_SIZE)) && (k[2] = -1))
 	{
-		k = -1;
-		while (k++ < bytes) // on parcours ce qu'on a lu
+		while ((k[2]++) < bytes)
 		{
-			if (buffer[k] == '\n')
-				newline_count++;
-			if (newline_count == 1 && first == 0) // debut de la deuxieme ligne donc fin de la premiere
-				map = save_first_line(&node, map, &first);
-			else if (newline_count == 0 || newline_count == 1) // premiere ligne
-				ft_list_push_back(&node, buffer[k]);
-			else if (newline_count == 2 && node) // fin de deuxieme ligne
+			if (buffer[k[2]] == '\n')
+				k[0]++;
+			if (k[0] == 1 && k[1] == 0)
+				map = save_first_line(&node, map, &k[1]);
+			else if (k[0] == 0 || k[0] == 1)
+				ft_list_push_back(&node, buffer[k[2]]);
+			else if (k[0] == 2 && node)
 				map = save_second_line(&node, map, 1);
-			if (newline_count >= 2 && (buffer[k] != '\n' || (buffer[k] == '\n' && buffer[k + 1]))) // autres lignes
-				map = save_lines(map, &index, buffer[k], &i, k);
+			if (k[0] >= 2 && (buffer[k[2]] != '\n' || (buffer[k[2]] == '\n'
+							&& buffer[k[2] + 1])))
+				map = save_lines(map, &index, buffer[k[2]], &i);
 		}
 	}
 	return (map);
