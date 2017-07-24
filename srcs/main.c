@@ -14,7 +14,7 @@
 
 int main(int argc, char *argv[])
 {
-	handle_file("test.txt");
+	handle_file(0);
 	/*
 	if (argc > 1)
 		while (argc-- > 0)

@@ -6,7 +6,7 @@
 /*   By: vtouffet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 13:54:40 by vtouffet          #+#    #+#             */
-/*   Updated: 2017/07/24 22:44:57 by vtouffet         ###   ########.fr       */
+/*   Updated: 2017/07/24 23:26:07 by vtouffet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	**save_first_line(t_list **node, int **map, int *first)
 	i = 0;
 	if (!(map = (int**)malloc(sizeof(int*) * ((l_count = ft_atoi(fline)) + 2)))) // on malloc la premiere dimension avec le atoi() de la premier ligne
 		return (NULL);
-	if (!(map[0] = (int*)malloc(sizeof(int*) * 7)))
+	if (!(map[0] = (int*)malloc(sizeof(int) * 7)))
 		return (NULL);
 	map[0][0] = fline[(length = ft_strlen(fline)) - 3];
 	map[0][1] = fline[length - 2];
@@ -65,7 +65,8 @@ int	**save_second_line(t_list **node, int **map, int index)
 	int		node_size;
 
 	node_size = ft_list_size(*node);
-	if (!(map[index] = (int*)malloc(sizeof(int) * node_size)))
+	printf("- map[%d] = (int*)malloc(sizeof(int) * %d);\n", index, node_size);
+	if (!(map[index] = (int*)malloc(sizeof(int) * (node_size))))
 		return (NULL);
 	map[0][3] = node_size + 1; // set line size
 	i = 0;
@@ -92,8 +93,9 @@ int	**save_lines(int **map, int *index, char c, int *i, int k)
 	{
 		++(*index);
 		*i = 0;
-		map[*index] = (int*)malloc(sizeof(int) * map[0][3]);
-		printf("map[%d] = (int*)malloc(sizeof(int) * %d);\n", *index, map[0][3]);
+		printf("_ map[%d] = (int*)malloc(sizeof(int) * %d);\n", *index, map[0][3]);
+		if (!(map[*index] = (int*)malloc(sizeof(int) * (map[0][3]))))
+			return (NULL);
 	}
 	else if (c)
 	{
@@ -125,15 +127,13 @@ int	**read_file(int fd, int **map)
 		{
 			if (buffer[k] == '\n')
 				newline_count++;
-			//else if (newline_count == 0)
-			//	ft_list_push_back(&node, buffer[k]);
-			else if (newline_count == 1 && first == 0) // debut de la deuxieme ligne donc fin de la premiere
+			if (newline_count == 1 && first == 0) // debut de la deuxieme ligne donc fin de la premiere
 				map = save_first_line(&node, map, &first);
 			else if (newline_count == 0 || newline_count == 1) // premiere ligne
 				ft_list_push_back(&node, buffer[k]);
 			else if (newline_count == 2 && node) // fin de deuxieme ligne
 				map = save_second_line(&node, map, 1);
-			if (newline_count >= 2) // autres lignes
+			if (newline_count >= 2 && (buffer[k] != '\n' || (buffer[k] == '\n' && buffer[k + 1]))) // autres lignes
 				map = save_lines(map, &index, buffer[k], &i, k);
 		}
 	}
