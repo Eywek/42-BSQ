@@ -6,7 +6,7 @@
 /*   By: vtouffet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 13:54:40 by vtouffet          #+#    #+#             */
-/*   Updated: 2017/07/24 18:51:56 by vtouffet         ###   ########.fr       */
+/*   Updated: 2017/07/24 20:49:11 by vtouffet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,140 +28,111 @@ int	**handle_file(char *filename)
 	return (read_file(fd, map));
 }
 
+int	**save_first_line(t_list **node, int **map, int *first)
+{
+	int		i;
+	char	*fline;
+	t_list	*current;
+	int		length;
+	int		l_count;
+
+	fline = (char*)malloc(sizeof(char) * ft_list_size(*node));
+	current = *node;
+	i = 0;
+	while (current && (fline[i++] = current->data))
+		current = current->next;
+	fline[i] = '\0';
+	i = 0;
+	if (!(map = (int**)malloc(sizeof(int*) * ((l_count = ft_atoi(fline)) + 1)))) // on malloc la premiere dimension avec le atoi() de la premier ligne
+		return (NULL);
+	if (!(map[0] = (int*)malloc(sizeof(int*) * 7)))
+		return (NULL);
+	map[0][0] = fline[(length = ft_strlen(fline)) - 3];
+	map[0][1] = fline[length - 2];
+	map[0][2] = fline[length - 1];
+	map[0][4] = l_count;
+	ft_list_clear(node);
+	free(fline);
+	*first = 1;
+	printf("Set config... (%s) - line_count: %d - length: %d\n", fline, l_count, length);
+	return (map);
+}
+
+int	**save_second_line(t_list **node, int **map, int index)
+{
+	t_list	*current;
+	int		i;
+	int		node_size;
+
+	node_size = ft_list_size(*node);
+	if (!(map[index] = (int*)malloc(sizeof(int) * node_size)))
+		return (NULL);
+	map[0][3] = node_size + 1; // set line size
+	i = 0;
+	printf("vide: %c\n", map[0][0]);
+	printf("obstacle: %c\n", map[0][1]);
+	printf("remplissage: %c\n", map[0][2]);
+	printf("line size: %d\n", map[0][3]);
+	printf("map size: %d\n", map[0][4]);
+	current = *node;
+	while (current)
+	{
+		map[index][i++] = (current->data == map[0][0]) ? 1 : 0;
+		printf("FIRST LINE map[%d][%d] = %d\n", index, i-1, map[index][i-1]);
+		current = current->next;
+	}
+	i = 0;
+	ft_list_clear(node);
+	return (map);
+}
+
+int	**save_lines(int **map, int *index, char c, int *i)
+{
+	if (c == '\n')
+	{
+		++(*index);
+		++(*i);
+		map[*index] = (int*)malloc(sizeof(int) * map[0][3]);
+	}
+	map[*index][*i] = (c == map[0][0]) ? 1 : 0;
+	printf("map[%d][%d] = \n", *index, *i);
+	return (map);
+}
+
 int	**read_file(int fd, int **map)
 {
 	ssize_t	bytes;
 	char	buffer[BUFFER_SIZE];
 	t_list	*node;
 	char	*first_line;
-	t_list	*current;
-	int		i;
 	int		newline_count;
 	int		index;
 	int		k;
+	int		first;
+	int		i;
 
 	index = 1;
+	first = 0;
+	i = 0;
 	newline_count = 0;
 	while ((bytes = read(fd, &buffer, BUFFER_SIZE)))
 	{
-		k = 0;
+		k = -1;
 		while (k++ < bytes) // on parcours ce qu'on a lu
 		{
 			if (buffer[k] == '\n')
 				newline_count++;
-			else if (newline_count == 1 && !first_line) // debut de la deuxieme ligne donc fin de la premiere
-			{
-				first_line = (char*)malloc(sizeof(char) * ft_list_size(node));
-				current = node;
-				i = 0;
-				while (current)
-				{
-					first_line[i++] = current->data;
-					current = current->next;
-				}
-				first_line[i] = '\0';
-				i = 0;
-				printf("Set config... (%s)\n", first_line);
-				if (!(map = (int**)malloc(sizeof(int*) * ft_atoi(first_line)))) // on malloc la premiere dimension avec le atoi() de la premier ligne
-					return (NULL);
-				if (!(map[0] = (int*)malloc(sizeof(int*) * 4)))
-					return (NULL);
-				map[0][0] = first_line[ft_strlen(first_line) - 3];
-				map[0][1] = first_line[ft_strlen(first_line) - 2];
-				map[0][2] = first_line[ft_strlen(first_line) - 1];
-				ft_list_clear(&node);
-			}
-			else if (newline_count == 0 || newline_count == 1) // premiere ligne
+			else if (newline_count == 0)
+				ft_list_push_back(&node, buffer[k]);
+			else if (newline_count == 1 && first == 0) // debut de la deuxieme ligne donc fin de la premiere
+				map = save_first_line(&node, map, &first);
+			else if (newline_count == 1) // premiere ligne
 				ft_list_push_back(&node, buffer[k]);
 			else if (newline_count == 2 && node) // fin de deuxieme ligne
-			{
-				if (!(map[index] = (int*)malloc(sizeof(int) * ft_list_size(node))))
-					return (NULL);
-				map[0][3] = ft_list_size(node); // set line size
-				i = 0;
-				printf("vide: %c\n", map[0][0]);
-				printf("obstacle: %c\n", map[0][1]);
-				printf("remplissage: %c\n", map[0][2]);
-				printf("line size: %d\n", map[0][3]);
-				current = node;
-				while (current)
-				{
-					map[index][i++] = (current->data == map[0][0]) ? 1 : 0;
-					printf("FIRST LINE map[%d][%d] = %d\n", index, i-1, map[index][i-1]);
-					current = current->next;
-				}
-				i = 0;
-				ft_list_clear(&node);
-			}
-			else if (newline_count > 2)
-			{
-				/*printf("vide: %c\n", map[0][0]);
-				printf("obstacle: %c\n", map[0][1]);
-				printf("line size: %d\n", map[0][3]);
-				if (buffer[k] == '\n')
-				{
-					i = 0;
-					if (!(map[++index] = (int*)malloc(sizeof(int) * 27)))
-						return (NULL);
-					printf("map[%d] = (int*)malloc(sizeof(int) * %d)\n", index, map[0][3]);
-				}
-				else
-				{
-					map[index][i++] = (buffer[k] == map[0][0]) ? 1 : 0;
-					printf("map[%d][%d] = %d (%c)\n", index, i-1, map[index][i-1], buffer[k]);
-				}*/
-			}
+				map = save_second_line(&node, map, index);
+			if (newline_count > 2) // autres lignes
+				map = save_lines(map, &index, buffer[k], &i);
 		}
 	}
-	free(first_line);
 	return (map);
 }
-
-/*
-char	*linked_list_to_str(t_list **node)
-{
-	int		i;
-	char	*str;
-	t_list	*current;
-
-	str = malloc(sizeof(char) * (ft_list_size(*node) + 1));
-	current = *node;
-	i = 0;
-	while (current)
-	{
-		str[i++] = current->data;
-		current = current->next;
-	}
-	str[i] = '\0';
-	ft_list_clear(node);
-	return (str);
-}
-
-char	*handle_file(char *filename)
-{
-	char	buffer[BUFFER_SIZE];
-	ssize_t	bytes;
-	int		fd;
-	t_list	*node;
-	int		i;
-
-	if (filename)
-		fd = open(filename, O_RDONLY);
-	else
-		fd = 0;
-	if (fd == -1)
-	{
-		write(2, "map error", 9);
-		return (0);
-	}
-	while ((bytes = read(fd, &buffer, BUFFER_SIZE)))
-	{
-		i = 0;
-		while (bytes-- > 0)
-			ft_list_push_back(&node, buffer[i++]);
-		//free(buffer);
-	}
-	//free(buffer);
-	return (linked_list_to_str(&node));
-}
-*/
