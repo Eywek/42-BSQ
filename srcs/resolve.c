@@ -6,7 +6,7 @@
 /*   By: jechoque <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 19:16:39 by jechoque          #+#    #+#             */
-/*   Updated: 2017/07/25 01:42:36 by vtouffet         ###   ########.fr       */
+/*   Updated: 2017/07/25 10:23:58 by vtouffet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,15 @@ int	**resolve(int **map)
 	y = (map[0][4] - 1);
 	while (--y >= 1)
 	{
-		x = (map[0][3] - 1);
-		while (x >= 0)
+		x = (map[0][3]);
+		while (--x >= 0)
 		{
 			if (map[y][x] == 0)
 				x--;
 			else
 			{
-				map[y][x] = (1 + check_arround(map[y][x + 1], map[y + 1][x], map[y + 1][x + 1]));
+				map[y][x] = (1 + check_arround(map[y][x + 1], map[y + 1][x],
+							map[y + 1][x + 1]));
 				if (map[y][x] >= map[0][5])
 				{
 					map[0][5] = map[y][x];
@@ -42,7 +43,6 @@ int	**resolve(int **map)
 					map[0][7] = y;
 				}
 			}
-			x--;
 		}
 	}
 	return (map);

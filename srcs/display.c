@@ -6,7 +6,7 @@
 /*   By: jechoque <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 20:47:23 by jechoque          #+#    #+#             */
-/*   Updated: 2017/07/25 02:04:44 by vtouffet         ###   ########.fr       */
+/*   Updated: 2017/07/25 10:22:21 by vtouffet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	display(int **map)
 		{
 			if (map[i][j] == 0)
 				ft_putchar(map[0][1]);
-			else if (j >= map[0][6] && (j < map[0][6] + map[0][5]) 
+			else if (j >= map[0][6] && (j < map[0][6] + map[0][5])
 					&& i >= map[0][7] && i < (map[0][7] + map[0][5]))
 				ft_putchar(map[0][2]);
 			else
