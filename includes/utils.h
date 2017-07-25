@@ -6,7 +6,7 @@
 /*   By: vtouffet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 13:25:49 by vtouffet          #+#    #+#             */
-/*   Updated: 2017/07/25 12:06:27 by vtouffet         ###   ########.fr       */
+/*   Updated: 2017/07/25 14:30:26 by vtouffet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdlib.h>
-# define BUFFER_SIZE 28676
+# define BUFFER_SIZE 8192
 
 int		**handle_file(char *filename);
 int		**read_file(int fd, int **map, int index, int *k);

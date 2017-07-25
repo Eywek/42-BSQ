@@ -6,7 +6,7 @@
 /*   By: jechoque <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 19:16:39 by jechoque          #+#    #+#             */
-/*   Updated: 2017/07/25 11:26:59 by vtouffet         ###   ########.fr       */
+/*   Updated: 2017/07/25 14:25:16 by vtouffet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@ int	check_arround(int i, int j, int k)
 		return (i);
 	else if (j <= i && j <= k)
 		return (j);
-	return (k);
+	else if (k <= i && k <= j)
+		return (k);
+	return (i);
 }
 
 int	**stock_coord(int **map, int x, int y)
@@ -37,21 +39,25 @@ int	**resolve(int **map)
 	int x;
 	int y;
 
+	x = 0;
+	y = 1;
+	map = stock_coord(map, x, y);
+	//printf("%d != %d\n", map[0][4], map[0][8]);
 	if (map == NULL || map[0][4] != map[0][8])
 		return (NULL);
-	y = (map[0][4] - 1);
-	while (--y >= 1)
+	y = (map[0][4]);
+	while (y-- >= 1)
 	{
-		x = (map[0][3]);
-		while (--x >= 0)
+		x = (map[0][3] - 2);
+		while (x-- >= 0)
 		{
-			if (map[y][x] == 0)
-				x--;
-			else
+			if (map[y][x] == 1)
 			{
 				map[y][x] = (1 + check_arround(map[y][x + 1], map[y + 1][x],
 							map[y + 1][x + 1]));
 				map = stock_coord(map, x, y);
+				//display(map);
+				//write(1, "\n\n", 2);
 			}
 		}
 	}
