@@ -6,7 +6,7 @@
 /*   By: vtouffet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 13:54:40 by vtouffet          #+#    #+#             */
-/*   Updated: 2017/07/25 10:29:19 by vtouffet         ###   ########.fr       */
+/*   Updated: 2017/07/25 10:31:21 by vtouffet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ int	**read_file(int fd, int **map, int index, int *k)
 	{
 		while ((k[2]++) < bytes)
 		{
+			if (map == NULL)
+				return (NULL);
 			if (buffer[k[2]] == '\n')
 				k[0]++;
 			if (k[0] == 1 && k[1] == 0)
