@@ -6,7 +6,7 @@
 /*   By: vtouffet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 13:54:40 by vtouffet          #+#    #+#             */
-/*   Updated: 2017/07/25 11:26:00 by vtouffet         ###   ########.fr       */
+/*   Updated: 2017/07/25 12:06:09 by vtouffet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	**save_first_line(t_list **node, int **map, int *first)
 	char	*fline;
 	t_list	*current;
 	int		l_count;
+	int		length;
 
 	fline = (char*)malloc(sizeof(char) * ft_list_size(*node));
 	current = *node;
@@ -48,11 +49,13 @@ int	**save_first_line(t_list **node, int **map, int *first)
 	fline[i] = '\0';
 	i = 0;
 	l_count = ft_atoi(fline);
+	if ((length = ft_strlen(fline)) != nb_size(l_count) + 3)
+		return (NULL);
 	if (!(map = (int**)malloc(sizeof(int*) * (l_count + 2))))
 		return (NULL);
 	if (!(map[0] = (int*)malloc(sizeof(int) * 9)))
 		return (NULL);
-	map = set_config(map, fline, l_count);
+	map = set_config(map, fline, l_count, length);
 	ft_list_clear(node);
 	free(fline);
 	*first = 1;
@@ -73,6 +76,8 @@ int	**save_second_line(t_list **node, int **map, int index)
 	current = *node;
 	while (current)
 	{
+		if (current->data != map[0][0] && current->data != map[0][1])
+			return (NULL);
 		map[index][i++] = (current->data == map[0][0]) ? 1 : 0;
 		current = current->next;
 	}
@@ -88,6 +93,8 @@ int	**save_lines(int **map, int *index, char c, int *i)
 	if (c == '\n')
 	{
 		++(*index);
+		if (*index > 2 && *i < map[0][3] - 1)
+			return (NULL);
 		*i = 0;
 		if (!(map[*index] = (int*)malloc(sizeof(int) * (map[0][3]))))
 			return (NULL);
@@ -111,8 +118,6 @@ int	**read_file(int fd, int **map, int index, int *k)
 	{
 		while ((k[2]++) < bytes)
 		{
-			if (map == NULL && k[0] >= 2)
-				return (NULL);
 			if (buffer[k[2]] == '\n')
 				k[0]++;
 			if (k[0] == 1 && k[1] == 0)
@@ -122,8 +127,10 @@ int	**read_file(int fd, int **map, int index, int *k)
 			else if (k[0] == 2 && node)
 				map = save_second_line(&node, map, 1);
 			if (k[0] >= 2 && (buffer[k[2]] != '\n' || (buffer[k[2]] == '\n'
-							&& buffer[k[2] + 1])))
+					&& buffer[k[2] + 1])) && map != NULL)
 				map = save_lines(map, &index, buffer[k[2]], &k[3]);
+			if (map == NULL && k[0] >= 1)
+				return (NULL);
 		}
 	}
 	map[0][8] = k[0] - 1;

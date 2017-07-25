@@ -6,7 +6,7 @@
 /*   By: vtouffet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 13:25:49 by vtouffet          #+#    #+#             */
-/*   Updated: 2017/07/25 10:45:32 by vtouffet         ###   ########.fr       */
+/*   Updated: 2017/07/25 12:06:27 by vtouffet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ int		ft_strlen(char *str);
 int		**resolve(int **map);
 void	display(int **map);
 void	ft_putchar(char c);
-int		**set_config(int **map, char *fline, int l_count);
+int		**set_config(int **map, char *fline, int l_count, int length);
 void	ft_putstr(char *str);
+int		nb_size(int nb);
 
 #endif
