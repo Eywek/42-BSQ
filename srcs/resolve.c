@@ -6,7 +6,7 @@
 /*   By: jechoque <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 19:16:39 by jechoque          #+#    #+#             */
-/*   Updated: 2017/07/25 21:14:10 by vtouffet         ###   ########.fr       */
+/*   Updated: 2017/07/25 23:36:01 by vtouffet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	check_arround(int i, int j, int k)
 		return (j);
 	else if (k <= i && k <= j)
 		return (k);
-	return (i);
+	return (k);
 }
 
 int	**stock_coord(int **map, int x, int y)
@@ -40,26 +40,30 @@ int	**resolve(int **map)
 	int y;
 
 	x = 0;
-	y = 1;
-	//printf("%d != %d\n", map[0][4], map[0][8]);
+	y = 0;
+	//printf("%d != %d\n", map[0][4], map[0][3]);
 	if (map == NULL || map[0][4] != map[0][8])
 		return (NULL);
+	map = stock_coord(map, (map[0][3] - 1), map[0][4]);
 	y = (map[0][4] + 1);
+	display(map);
 	while (y-- > 1)
 	{
 		x = (map[0][3]);
-		while (x-- > 0)
+		//printf("%d != %d\n", map[0][4], map[0][3]);
+		while (--x >= 0)
 		{
-			if (map[y][x] == 1 && x != map[0][3])
+			printf("%d\n", map[y][x]);
+			if (map[y][x] == 1)
 			{
-				map[y][x] = (1 + check_arround(map[y][x + 1], map[y + 1][x],
+				if (x != (map[0][3] - 1) && y != (map[0][4]))
+					map[y][x] = (1 + check_arround(map[y][x + 1], map[y + 1][x],
 							map[y + 1][x + 1]));
 				map = stock_coord(map, x, y);
 			}
-			else if (map[y][x] == 1 && x == map[0][3])
-				map = stock_coord(map, x, y);
-				//display(map);
-				//write(1, "\n\n", 2);
+			printf("x: %d  y: %d\n", x, y);
+			display(map);
+			write(1, "\n\n", 2);
 		}
 	}
 	return (map);
