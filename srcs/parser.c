@@ -6,7 +6,7 @@
 /*   By: vtouffet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 13:54:40 by vtouffet          #+#    #+#             */
-/*   Updated: 2017/07/25 10:31:21 by vtouffet         ###   ########.fr       */
+/*   Updated: 2017/07/25 10:42:53 by vtouffet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int	**save_second_line(t_list **node, int **map, int index)
 	if (!(map[index] = (int*)malloc(sizeof(int) * (node_size))))
 		return (NULL);
 	map[0][3] = node_size + 1;
+	printf("map[0][3] = %d;\n", map[0][3]);
 	i = 0;
 	current = *node;
 	while (current)
@@ -81,15 +82,23 @@ int	**save_second_line(t_list **node, int **map, int index)
 
 int	**save_lines(int **map, int *index, char c, int *i)
 {
+	if (*i > map[0][3] - 1)
+		return (NULL);
 	if (c == '\n')
 	{
 		++(*index);
+		if (*index > map[0][4])
+			return (NULL);
 		*i = 0;
 		if (!(map[*index] = (int*)malloc(sizeof(int) * (map[0][3]))))
 			return (NULL);
 	}
 	else if (c)
+	{
+		if (c != map[0][0] && c != map[0][1])
+			return (NULL);
 		map[*index][(*i)++] = (c == map[0][0]) ? 1 : 0;
+	}
 	return (map);
 }
 
