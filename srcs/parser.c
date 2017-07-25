@@ -6,7 +6,7 @@
 /*   By: vtouffet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 13:54:40 by vtouffet          #+#    #+#             */
-/*   Updated: 2017/07/25 17:42:13 by vtouffet         ###   ########.fr       */
+/*   Updated: 2017/07/25 19:21:43 by vtouffet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	**handle_file(char *filename)
 	int		k[4];
 	int		**map;
 
+	printf("file: %s\n", filename);
 	k[0] = 0;
 	k[1] = 0;
 	k[3] = 0;
@@ -29,7 +30,10 @@ int	**handle_file(char *filename)
 		fd = 0;
 	if (fd == -1)
 		return (map);
-	return (read_file(fd, map, 1, k));
+printf("fd: %d\n", fd);
+	map = read_file(fd, map, 1, k);
+	close(fd);
+	return (map);
 }
 
 int	**save_first_line(t_list **node, int **map, int *first)
