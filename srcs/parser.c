@@ -6,7 +6,7 @@
 /*   By: vtouffet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 13:54:40 by vtouffet          #+#    #+#             */
-/*   Updated: 2017/07/25 21:38:49 by vtouffet         ###   ########.fr       */
+/*   Updated: 2017/07/25 21:43:37 by vtouffet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,10 @@ int	**save_first_line(t_list **node, int **map, int *first)
 	fline[i] = '\0';
 	i = 0;
 	l_count = ft_atoi(fline);
+	printf("First line: %s\n", fline);
 	printf("Compare lines (%d != %d + 3)\n", ft_strlen(fline), nb_size(l_count) + 3);
+	ft_list_clear(node);
+	free(current);
 	if ((length = ft_strlen(fline)) != nb_size(l_count) + 3)
 		return (NULL);
 	if (!(map = (int**)malloc(sizeof(int*) * (l_count + 2))))
@@ -65,9 +68,7 @@ int	**save_first_line(t_list **node, int **map, int *first)
 	printf("config[1] = %c\n", map[0][1]);
 	printf("config[2] = %c\n", map[0][2]);
 	printf("config[4] = %d\n", map[0][4]);
-	ft_list_clear(node);
 	free(fline);
-	free(current);
 	*first = 1;
 	return (map);
 }
