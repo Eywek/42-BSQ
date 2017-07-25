@@ -6,7 +6,7 @@
 /*   By: jechoque <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 19:16:39 by jechoque          #+#    #+#             */
-/*   Updated: 2017/07/25 10:23:58 by vtouffet         ###   ########.fr       */
+/*   Updated: 2017/07/25 10:44:02 by jechoque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,24 @@ int	check_arround(int i, int j, int k)
 	return (k);
 }
 
+int	**stock_coord(int **map, int x, int y)
+{
+	if (map[y][x] >= map[0][5])
+	{
+		map[0][5] = map[y][x];
+		map[0][6] = x;
+		map[0][7] = y;
+	}
+}
+
 int	**resolve(int **map)
 {
 	int x;
 	int y;
 
 	y = (map[0][4] - 1);
+	if (map = NULL)
+		return (NULL);
 	while (--y >= 1)
 	{
 		x = (map[0][3]);
@@ -36,12 +48,7 @@ int	**resolve(int **map)
 			{
 				map[y][x] = (1 + check_arround(map[y][x + 1], map[y + 1][x],
 							map[y + 1][x + 1]));
-				if (map[y][x] >= map[0][5])
-				{
-					map[0][5] = map[y][x];
-					map[0][6] = x;
-					map[0][7] = y;
-				}
+				map = stock_coord(map, x, y);
 			}
 		}
 	}

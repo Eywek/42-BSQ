@@ -6,7 +6,7 @@
 /*   By: jechoque <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 20:47:23 by jechoque          #+#    #+#             */
-/*   Updated: 2017/07/25 10:22:21 by vtouffet         ###   ########.fr       */
+/*   Updated: 2017/07/25 10:43:40 by jechoque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	display(int **map)
 	int j;
 
 	i = 1;
+	if (map = NULL)
+		ft_putstr("map error");
 	while (i <= map[0][4])
 	{
 		j = -1;
