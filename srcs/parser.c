@@ -6,7 +6,7 @@
 /*   By: vtouffet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 13:54:40 by vtouffet          #+#    #+#             */
-/*   Updated: 2017/07/25 10:42:53 by vtouffet         ###   ########.fr       */
+/*   Updated: 2017/07/25 11:26:00 by vtouffet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ int	**handle_file(char *filename)
 
 	k[0] = 0;
 	k[1] = 0;
+	k[2] = -1;
 	k[3] = 0;
+	map = NULL;
 	if (filename)
 		fd = open(filename, O_RDONLY);
 	else
@@ -48,7 +50,7 @@ int	**save_first_line(t_list **node, int **map, int *first)
 	l_count = ft_atoi(fline);
 	if (!(map = (int**)malloc(sizeof(int*) * (l_count + 2))))
 		return (NULL);
-	if (!(map[0] = (int*)malloc(sizeof(int) * 7)))
+	if (!(map[0] = (int*)malloc(sizeof(int) * 9)))
 		return (NULL);
 	map = set_config(map, fline, l_count);
 	ft_list_clear(node);
@@ -67,7 +69,6 @@ int	**save_second_line(t_list **node, int **map, int index)
 	if (!(map[index] = (int*)malloc(sizeof(int) * (node_size))))
 		return (NULL);
 	map[0][3] = node_size + 1;
-	printf("map[0][3] = %d;\n", map[0][3]);
 	i = 0;
 	current = *node;
 	while (current)
@@ -87,8 +88,6 @@ int	**save_lines(int **map, int *index, char c, int *i)
 	if (c == '\n')
 	{
 		++(*index);
-		if (*index > map[0][4])
-			return (NULL);
 		*i = 0;
 		if (!(map[*index] = (int*)malloc(sizeof(int) * (map[0][3]))))
 			return (NULL);
@@ -108,12 +107,11 @@ int	**read_file(int fd, int **map, int index, int *k)
 	char	buffer[BUFFER_SIZE];
 	t_list	*node;
 
-	k[2] = -1;
 	while ((bytes = read(fd, &buffer, BUFFER_SIZE)))
 	{
 		while ((k[2]++) < bytes)
 		{
-			if (map == NULL)
+			if (map == NULL && k[0] >= 2)
 				return (NULL);
 			if (buffer[k[2]] == '\n')
 				k[0]++;
@@ -128,5 +126,6 @@ int	**read_file(int fd, int **map, int index, int *k)
 				map = save_lines(map, &index, buffer[k[2]], &k[3]);
 		}
 	}
+	map[0][8] = k[0] - 1;
 	return (map);
 }
