@@ -6,7 +6,7 @@
 /*   By: vtouffet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 13:54:40 by vtouffet          #+#    #+#             */
-/*   Updated: 2017/07/25 16:37:44 by vtouffet         ###   ########.fr       */
+/*   Updated: 2017/07/25 17:42:13 by vtouffet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,10 @@ int	**save_first_line(t_list **node, int **map, int *first)
 	if (!(map[0] = (int*)malloc(sizeof(int) * 9)))
 		return (NULL);
 	map = set_config(map, fline, l_count, length);
+	printf("config[0] = %c\n", map[0][0]);
+	printf("config[1] = %c\n", map[0][1]);
+	printf("config[2] = %c\n", map[0][2]);
+	printf("config[4] = %d\n", map[0][4]);
 	ft_list_clear(node);
 	free(fline);
 	*first = 1;
@@ -71,7 +75,8 @@ int	**save_second_line(t_list **node, int **map, int index)
 	node_size = ft_list_size(*node);
 	if (!(map[index] = (int*)malloc(sizeof(int) * (node_size))))
 		return (NULL);
-	map[0][3] = node_size + 1;
+	map[0][3] = node_size;
+	printf("config[3] = %d\n", map[0][3]);
 	i = 0;
 	current = *node;
 	while (current)
@@ -79,6 +84,7 @@ int	**save_second_line(t_list **node, int **map, int index)
 		if (current->data != map[0][0] && current->data != map[0][1])
 			return (NULL);
 		map[index][i++] = (current->data == map[0][0]) ? 1 : 0;
+		printf("map[%d][%d] = %d\n", index, i-1, map[index][i-1]);
 		current = current->next;
 	}
 	i = 0;
@@ -88,10 +94,11 @@ int	**save_second_line(t_list **node, int **map, int index)
 
 int	**save_lines(int **map, int *index, char c, int *i)
 {
-	if (*i > map[0][3] - 1)
+	if (*i > map[0][3])
 		return (NULL);
 	if (c == '\n')
 	{
+		printf("-- NEW LINE --\n");
 		++(*index);
 		if (*index > 2 && *i < map[0][3] - 1)
 			return (NULL);
@@ -104,6 +111,7 @@ int	**save_lines(int **map, int *index, char c, int *i)
 		if (c != map[0][0] && c != map[0][1])
 			return (NULL);
 		map[*index][(*i)++] = (c == map[0][0]) ? 1 : 0;
+		printf("map[%d][%d] = %d\n", *index, *i-1, map[*index][*i-1]);
 	}
 	return (map);
 }
@@ -127,13 +135,13 @@ int	**read_file(int fd, int **map, int index, int *k)
 				ft_list_push_back(&node, buffer[k[2]]);
 			else if (k[0] == 2 && node)
 				map = save_second_line(&node, map, 1);
-			if (k[0] >= 2 && (buffer[k[2]] != '\n' || (buffer[k[2]] == '\n'
-					&& buffer[k[2] + 1])) && map != NULL)
+			if (k[0] >= 2  && map != NULL)
 				map = save_lines(map, &index, buffer[k[2]], &k[3]);
 			if (map == NULL && k[0] >= 1)
 				return (NULL);
 		}
 	}
-	map[0][8] = index - 1;
+	map[0][8] = --index;
+	printf("config[8] = %d\n", index);
 	return (map);
 }
