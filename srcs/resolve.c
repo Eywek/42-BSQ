@@ -6,7 +6,7 @@
 /*   By: jechoque <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 19:16:39 by jechoque          #+#    #+#             */
-/*   Updated: 2017/07/25 14:25:16 by vtouffet         ###   ########.fr       */
+/*   Updated: 2017/07/25 15:15:32 by vtouffet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,10 @@ int	**resolve(int **map)
 
 	x = 0;
 	y = 1;
-	map = stock_coord(map, x, y);
 	//printf("%d != %d\n", map[0][4], map[0][8]);
 	if (map == NULL || map[0][4] != map[0][8])
 		return (NULL);
+	map = stock_coord(map, x, y);
 	y = (map[0][4]);
 	while (y-- >= 1)
 	{

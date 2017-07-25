@@ -6,7 +6,7 @@
 /*   By: vtouffet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 13:54:40 by vtouffet          #+#    #+#             */
-/*   Updated: 2017/07/25 15:07:36 by vtouffet         ###   ########.fr       */
+/*   Updated: 2017/07/25 16:37:44 by vtouffet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ int	**save_first_line(t_list **node, int **map, int *first)
 	int		l_count;
 	int		length;
 
-	fline = (char*)malloc(sizeof(char) * ft_list_size(*node));
+	if (!(fline = (char*)malloc(sizeof(char) * ft_list_size(*node))))
+		return (NULL);
 	current = *node;
 	i = 0;
 	while (current && (fline[i++] = current->data))
@@ -115,12 +116,10 @@ int	**read_file(int fd, int **map, int index, int *k)
 
 	while ((bytes = read(fd, &buffer, BUFFER_SIZE)))
 	{
-		printf("Je lis %zd bytes pour %d size\n", bytes, BUFFER_SIZE);
 		k[2] = -1;
-		while ((k[2]++) < bytes)
+		while ((++k[2]) < bytes)
 		{
-			printf("Index: %d, k: %d - %d, c: %c\n", index, k[2], k[0], buffer[k[2]]);
-			/*if (buffer[k[2]] == '\n')
+			if (buffer[k[2]] == '\n')
 				k[0]++;
 			if (k[0] == 1 && k[1] == 0)
 				map = save_first_line(&node, map, &k[1]);
@@ -132,10 +131,9 @@ int	**read_file(int fd, int **map, int index, int *k)
 					&& buffer[k[2] + 1])) && map != NULL)
 				map = save_lines(map, &index, buffer[k[2]], &k[3]);
 			if (map == NULL && k[0] >= 1)
-				return (NULL);*/
+				return (NULL);
 		}
 	}
-	//printf("line count %d\n", k[0]);
-	//map[0][8] = index;
-	//return (map);
+	map[0][8] = index - 1;
+	return (map);
 }
