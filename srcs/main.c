@@ -6,7 +6,7 @@
 /*   By: vtouffet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 09:45:36 by vtouffet          #+#    #+#             */
-/*   Updated: 2017/07/25 12:07:15 by vtouffet         ###   ########.fr       */
+/*   Updated: 2017/07/25 12:14:12 by vtouffet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,14 @@
 
 int	main(int argc, char *argv[])
 {
+	int	count;
+
+	count = 0;
 	if (argc > 1)
-		while (--argc > 0)
+		while (++count < argc)
 		{
-			display(resolve(handle_file(argv[argc])));
-			if (argc - 1 > 0)
+			display(resolve(handle_file(argv[count])));
+			if (count + 1 < argc)
 				ft_putchar('\n');
 		}
 	else
