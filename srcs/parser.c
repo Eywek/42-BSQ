@@ -6,7 +6,7 @@
 /*   By: vtouffet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 13:54:40 by vtouffet          #+#    #+#             */
-/*   Updated: 2017/07/24 23:53:03 by vtouffet         ###   ########.fr       */
+/*   Updated: 2017/07/25 01:51:11 by vtouffet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,5 +119,10 @@ int	**read_file(int fd, int **map, int index, int i)
 				map = save_lines(map, &index, buffer[k[2]], &i);
 		}
 	}
+	printf("map[0][0] = %c\n", map[0][0]);
+	printf("map[0][1] = %c\n", map[0][1]);
+	printf("map[0][2] = %c\n", map[0][2]);
+	printf("map[0][3] = %d\n", map[0][3]);
+	printf("map[0][4] = %d\n", map[0][4]);
 	return (map);
 }

@@ -6,33 +6,30 @@
 /*   By: jechoque <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 20:47:23 by jechoque          #+#    #+#             */
-/*   Updated: 2017/07/25 00:15:17 by jechoque         ###   ########.fr       */
+/*   Updated: 2017/07/25 02:04:44 by vtouffet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
+#include "../includes/utils.h"
 
-void	ft_putchar(char c);
-
-void	display(int **tab)
+void	display(int **map)
 {
 	int i;
 	int j;
 
 	i = 1;
-	while (i < 8)
+	while (i <= map[0][4])
 	{
 		j = -1;
-		while (j++ < 8)
+		while (++j + 1 < map[0][3])
 		{
-			if (tab[i][j] == 0)
-				ft_putchar(tab[0][1]);
-			else if (j >= tab[0][6] && (j < tab[0][6] + tab[0][5]) 
-					&& i >= tab[0][7] && i < (tab[0][7] + tab[0][5]))
-				ft_putchar(tab[0][2]);
+			if (map[i][j] == 0)
+				ft_putchar(map[0][1]);
+			else if (j >= map[0][6] && (j < map[0][6] + map[0][5]) 
+					&& i >= map[0][7] && i < (map[0][7] + map[0][5]))
+				ft_putchar(map[0][2]);
 			else
-				ft_putchar(tab[0][0]);
-			ft_putchar(' ');
+				ft_putchar(map[0][0]);
 		}
 		i++;
 		ft_putchar('\n');
