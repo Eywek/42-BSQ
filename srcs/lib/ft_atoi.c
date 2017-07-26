@@ -6,7 +6,7 @@
 /*   By: vtouffet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/06 08:53:02 by vtouffet          #+#    #+#             */
-/*   Updated: 2017/07/22 14:29:47 by vtouffet         ###   ########.fr       */
+/*   Updated: 2017/07/26 20:23:57 by vtouffet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	ft_atoi(char *str)
 	int	res;
 	int	negative;
 
+	if (!str || !*str)
+		return (0);
 	start = 0;
 	while (str[start] != '\0' && (str[start] == ' ' || str[start] == '\t' ||
 			str[start] == '\r' || str[start] == '\n'))
@@ -33,7 +35,5 @@ int	ft_atoi(char *str)
 			res = (res * 10) + (str[i] - 48);
 		++i;
 	}
-	if (negative)
-		res *= -1;
-	return (res);
+	return ((negative) ? res * -1 : res);
 }
