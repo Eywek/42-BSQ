@@ -6,7 +6,7 @@
 /*   By: jechoque <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 19:16:39 by jechoque          #+#    #+#             */
-/*   Updated: 2017/07/26 00:54:01 by vtouffet         ###   ########.fr       */
+/*   Updated: 2017/07/26 18:56:04 by vtouffet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	**resolve(int **map)
 	int x;
 	int y;
 
-	if (map == NULL || map[0][4] != map[0][8])
+	if (!map || map[0][4] != map[0][8] || map[0][3] == 0 || map[0][4] == 0)
 		return (NULL);
 	x = map[0][3];
 	y = map[0][4] + 1;

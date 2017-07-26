@@ -6,7 +6,7 @@
 /*   By: vtouffet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 13:54:40 by vtouffet          #+#    #+#             */
-/*   Updated: 2017/07/26 01:43:05 by vtouffet         ###   ########.fr       */
+/*   Updated: 2017/07/26 18:09:06 by vtouffet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	**save_first_line(t_list **node, int **map, int *first, int i)
 	while (current && (fline[i++] = current->data))
 		current = current->next;
 	fline[i] = '\0';
-	l_count = ft_atoi(fline);
+	l_count = ft_atoi(ft_strcut(fline, 3));
 	ft_list_clear(node);
 	free(current);
 	if ((length = ft_strlen(fline)) != nb_size(l_count) + 3)
@@ -94,7 +94,7 @@ int	**save_lines(int **map, int *index, char c, int *i)
 	if (c == '\n')
 	{
 		++(*index);
-		if (*index > 2 && *i < map[0][3] - 1)
+		if (*index > 2 && *i < map[0][3])
 			return (NULL);
 		*i = 0;
 		if (!(map[*index] = (int*)malloc(sizeof(int) * (map[0][3]))))

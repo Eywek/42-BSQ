@@ -6,7 +6,7 @@
 /*   By: vtouffet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 09:45:36 by vtouffet          #+#    #+#             */
-/*   Updated: 2017/07/26 01:28:45 by vtouffet         ###   ########.fr       */
+/*   Updated: 2017/07/26 17:27:46 by vtouffet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ int	**set_config(int **map, char *fline, int l_count, int length)
 	map[0][1] = fline[length - 2];
 	map[0][2] = fline[length - 1];
 	map[0][4] = l_count;
+	if (map[0][0] == map[0][1] || map[0][0] == map[0][2] ||
+			map[0][1] == map[0][2])
+		return (NULL);
 	return (map);
 }
 
