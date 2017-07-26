@@ -6,7 +6,7 @@
 #    By: vtouffet <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/07/24 09:39:33 by vtouffet          #+#    #+#              #
-#    Updated: 2017/07/26 21:48:16 by vtouffet         ###   ########.fr        #
+#    Updated: 2017/07/26 21:53:10 by vtouffet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ $(NAME):
 clean:
 	/bin/rm -f $(OBJECTS)
 
-fclean:
+fclean: clean
 	/bin/rm -f $(NAME)
 
 re: fclean all
