@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <printf.h>
 #include "../includes/utils.h"
 
 int	check_arround(int i, int j, int k)
@@ -43,7 +44,8 @@ int	**resolve(int **map)
 		return (NULL);
 	x = map[0][3];
 	y = map[0][4] + 1;
-	map = stock_coord(map, map[y][x], (x - 1), y);
+    map[0][5] = 0;
+	map = stock_coord(map, map[(y - 1)][(x - 1)], (x - 1), (y - 1));
 	while (y-- > 1)
 	{
 		x = (map[0][3]);
