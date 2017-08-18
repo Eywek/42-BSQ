@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <printf.h>
 #include "../includes/utils.h"
 
 int	check_arround(int i, int j, int k)
